@@ -247,22 +247,14 @@ print(all(i2t[t2i[tok]] == tok for tok in t2i))  # should be True
 #" | ".join([" ".join(i2t[i] for i in e) for e in enc]) == 'the quick brown fox jumps over the lazy dog | what a luck we had today'
 
 def tokenize_and_encode(documents: list):
-    # build vocabulary from all documents
     token_to_id, id_to_token = make_vocabulary_map(documents)
 
     encoded = []
     for doc in documents:
-        # tokenize in original order (lowercase, remove punctuation)
-        toks = ["".join(ch for ch in word if ch.isalpha()).lower()
-                for word in doc.split()]
-        toks = [t for t in toks if t]
+        toks = tokenize(doc)  # this gives the expected token list per doc
         encoded.append([token_to_id[t] for t in toks])
 
     return encoded, token_to_id, id_to_token
-
-enc, t2i, i2t = tokenize_and_encode([text, 'What a luck we had today!'])
-print(" | ".join([" ".join(i2t[i] for i in e) for e in enc]) ==
-      'the quick brown fox jumps over the lazy dog | what a luck we had today')
 # -----------------------------------------------
 
 
